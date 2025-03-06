@@ -41,10 +41,11 @@ def get_member_info(PTA_session, JSESSIONID, ProblemSetId):
     for member in members:
         if "studentUser" in member:
             mGroup = "official"
-            mOrganization = "郑州轻工业大学"
+            mOrganization = "your_organization_name"
             mName = member.get("studentUser").get("name")
             mId = member.get("studentUser").get("studentNumber")
 
+            # this is a simple example of zzuliers, you can modify the rules according to yours.
             if mId[0:1] not in "54":
                 mOrganization = "2024新生赛-校外"
                 mGroup = "unofficial"
@@ -66,4 +67,4 @@ def get_member_info(PTA_session, JSESSIONID, ProblemSetId):
 
 
 if __name__ == "__main__":
-    get_member_info("667f5c5e-d11e-4cd9-9149-858c7ffc6cbd", "33928770EF096EB2AD3CB74F1BFE652A", "1897129501344104448")
+    get_member_info("PTASession", "JSESSIONID", "ProblemSetId")

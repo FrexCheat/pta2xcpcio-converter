@@ -102,4 +102,4 @@ if __name__ == "__main__":
         elif opt in ("-t", "--frozenTime"):
             frozenTime = arg
 
-    get_member_runs("667f5c5e-d11e-4cd9-9149-858c7ffc6cbd", "33928770EF096EB2AD3CB74F1BFE652A", "1897129501344104448", isFrozen, frozenTime)
+    get_member_runs("PTASession", "JSESSIONID", "ProblemSetId", isFrozen, frozenTime)
