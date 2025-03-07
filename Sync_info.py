@@ -1,4 +1,5 @@
 import json
+import time
 import requests
 
 
@@ -6,10 +7,11 @@ def get_session(PTASession, JSESSIONID):
     session = requests.Session()
     cookies = {"PTASession": PTASession, "JSESSIONID": JSESSIONID}
     headers = {
-        "Content-Type": "application/json;charset=UTF-8",
-        "Accept-Language": "cn-ZH",
+        "Accept-Language": "zh-CN",
         "Accept": "application/json;charset=UTF-8",
-        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1",
+        "Accept-Encoding": "gzip, deflate, br, zstd",
+        "Content-Type": "application/json;charset=UTF-8",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36 Edg/133.0.0.0",
     }
     session.cookies.update(cookies)
     session.headers.update(headers)
@@ -37,6 +39,7 @@ def get_member_info(PTA_session, JSESSIONID, ProblemSetId):
         res = session.get(url)
         res_json = json.loads(res.text)
         members = members + res_json.get("members")
+        time.sleep(0.5)
 
     for member in members:
         if "studentUser" in member:
