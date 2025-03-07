@@ -1,5 +1,6 @@
 import sys
 import json
+import time
 import getopt
 import requests
 from datetime import datetime
@@ -11,14 +12,28 @@ def time_difference(time1: str, time2: str) -> int:
     return int((dt1 - dt2).total_seconds())
 
 
+def transComplierToLanguage(compiler):
+    if compiler == "GXX" or compiler == "CLANGXX":
+        return "C++"
+    elif compiler == "GCC" or compiler == "CLANG" or compiler == "MODERN_GCC":
+        return "C"
+    elif compiler == "PYPY3" or compiler == "PYTHON3" or compiler == "PYTHON2":
+        return "Python"
+    elif compiler == "JAVAC":
+        return "Java"
+    else:
+        return "Other Language"
+
+
 def get_session(PTASession, JSESSIONID):
     session = requests.Session()
     cookies = {"PTASession": PTASession, "JSESSIONID": JSESSIONID}
     headers = {
-        "Content-Type": "application/json;charset=UTF-8",
-        "Accept-Language": "cn-ZH",
+        "Accept-Language": "zh-CN",
         "Accept": "application/json;charset=UTF-8",
-        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1",
+        "Accept-Encoding": "gzip, deflate, br, zstd",
+        "Content-Type": "application/json;charset=UTF-8",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36 Edg/133.0.0.0",
     }
     session.cookies.update(cookies)
     session.headers.update(headers)
@@ -56,6 +71,7 @@ def get_member_runs(PTASession, JSESSIONID, PTASetid, isFrozen, frozenTime):
         for submission in submissions:
             submitStamp = time_difference(submission["submitAt"], startTime_utc)
             submitDiffStamp = time_difference(endTime_utc, submission["submitAt"])
+            submitLanguage = transComplierToLanguage(submission["compiler"])
 
             if submission["status"] == "COMPILE_ERROR":
                 submission["status"] = "COMPILATION_ERROR"
@@ -69,7 +85,7 @@ def get_member_runs(PTASession, JSESSIONID, PTASetid, isFrozen, frozenTime):
             runs.insert(
                 0,
                 {
-                    "language": submission["compiler"],
+                    "language": submitLanguage,
                     "problem_id": sub_json["problemSetProblemById"][submission["problemSetProblemId"]]["problemPoolIndex"] - 1,
                     "status": submission["status"],
                     "submission_id": submission["id"],
@@ -78,6 +94,8 @@ def get_member_runs(PTASession, JSESSIONID, PTASetid, isFrozen, frozenTime):
                 },
             )
         count += 1
+        time.sleep(0.5)
+
     with open("run.json", "w", encoding="utf-8") as f:
         json.dump(runs, f, ensure_ascii=False, indent=4)
 
