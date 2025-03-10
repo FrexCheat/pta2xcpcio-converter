@@ -96,7 +96,7 @@ def get_member_runs(PTASession, JSESSIONID, PTASetid, isFrozen, frozenTime):
         count += 1
         time.sleep(0.5)
 
-    with open("run.json", "w", encoding="utf-8") as f:
+    with open("./output/run.json", "w", encoding="utf-8") as f:
         json.dump(runs, f, ensure_ascii=False, indent=4)
 
 

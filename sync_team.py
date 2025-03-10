@@ -65,7 +65,7 @@ def get_member_info(PTA_session, JSESSIONID, ProblemSetId):
         else:
             continue
 
-    with open("team.json", "w", encoding="utf-8") as f:
+    with open("./output/team.json", "w", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False, indent=4)
 
 
