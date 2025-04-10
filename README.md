@@ -25,7 +25,7 @@ python3 sync_runs.py -f -t 1800
 ## Run with scheduler
 
 ```bash
-# The default cycle time is 15s.
-# You can change it in .py source file.
+# The default cycle time of sync is 15 seconds.
+# You can change it in python source file.
 python3 sync_scheduler.py
 ```
